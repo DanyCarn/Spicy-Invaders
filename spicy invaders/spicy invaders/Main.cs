@@ -6,7 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using System.Threading;
 
 namespace spicy_invaders
 {
@@ -25,8 +25,6 @@ namespace spicy_invaders
 
             //indique si le joueur veut quitter
             bool _quit = false;
-
-
 
             //fixe la taille de la fenêtre
             Console.WindowWidth = WINDOWWIDTH;
@@ -77,7 +75,7 @@ namespace spicy_invaders
 
             } while (_quit == false);
 
-            //méthode permettant d'afficher le menu
+            ///méthode permettant d'afficher le menu
             void Menu()
             {
                 //efface tout ce qui est actuellement a l'écran
@@ -95,8 +93,7 @@ namespace spicy_invaders
                 Console.WriteLine("(5) Quitter");
             }
 
-
-            //méthode permettant de lancer le jeu
+            ///méthode permettant de lancer le jeu
             void Game()
             {
                 //efface le curseur
@@ -122,43 +119,22 @@ namespace spicy_invaders
                     //à chaque fois que le joueur appuie sur gauche ou droite, bouge le vaisseau dans la direction voulue
                     switch (_move)
                     {
+                        //déplacement à droite
                         case ConsoleKey.RightArrow:
 
-                            //stocke la position du vaisseau avant le déplacement
-                            ship.OldPosition = ship.PositionX;
-
-                            //empêche le joueur d'aller plus loin que la taille de la page
-                            if (ship.PositionX < WINDOWWIDTH - 3)
-                            {
-                                ship.PositionX++;
-                            }
-
+                            ship.MoveRight();
                             break;
 
+                        //déplacement à gauche
                         case ConsoleKey.LeftArrow:
 
-                            //stocke la position du vaisseau avant le déplacement
-                            ship.OldPosition = ship.PositionX;
-
-                            //empêche le joueur d'aller plus loin que la taille de la page
-                            if (ship.PositionX > 0)
-                            {
-                                ship.PositionX--;
-                            }
-
+                            ship.MoveLeft();
                             break;
 
+                        //tire le missile
                         case ConsoleKey.Spacebar:
-                            //donne la position X et Y du missile avec la position du vaisseau
-                            missile.MissileX = ship.PositionX + 1;
 
-                            //la position du missile vaut la position du vaisseau - 1 car sinon, le missile serait dans le vaisseau
-                            //TODO LE VAISSEAU RECULE QUAND ON TIRE A RéGLER
-                            missile.MissileY = ship.PositionY - 1; 
-
-                            //dessine le missile lorsqu'il est tiré, puis le met à jour
-                            missile.DrawMissile();
-                            missile.UpdateMissile();
+                            missile.FireMissile(shipX: ship.PositionX + 1, shipY: ship.PositionY - 1);
                             break;
 
                         default:
@@ -208,9 +184,12 @@ namespace spicy_invaders
 
             }
 
+            ///affiche les règles du jeu
             void About()
             {
-
+                Console.Clear();
+                Console.WriteLine("En construction...");
+                Console.ReadLine();
             }
         }
     }

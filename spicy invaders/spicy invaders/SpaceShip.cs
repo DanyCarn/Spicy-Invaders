@@ -6,7 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using System.Threading;
 
 namespace spicy_invaders
 {
@@ -22,11 +22,10 @@ namespace spicy_invaders
         private int _shipX = Console.WindowWidth / 2; 
 
         //position de départ dans l'axe Y pour le vaisseau
-        private int _shipY = Console.WindowHeight ;
+        private int _shipY = Console.WindowHeight - 2 ;
 
         //La position du vaisseau avant le déplacement
         private int _oldXPosition = 0;
-
 
 
         /// <summary>
@@ -48,6 +47,36 @@ namespace spicy_invaders
             {
             Console.SetCursorPosition(_oldXPosition + i, _shipY);
             Console.WriteLine(" ");
+            }
+        }
+
+        /// <summary>
+        /// déplace le vaisseau à droite
+        /// </summary>
+        public void MoveRight()
+        {
+            //stocke la position du vaisseau avant le déplacement
+            _oldXPosition = _shipX;
+
+            //empêche le joueur d'aller plus loin que la taille de la page
+            if (_shipX < Console.WindowWidth - 3)
+            {
+                _shipX++;
+            }
+        }
+
+        /// <summary>
+        /// déplace le vaisseau à gauche
+        /// </summary>
+        public void MoveLeft() 
+        {
+            //stocke la position du vaisseau avant le déplacement
+            _oldXPosition = _shipX;
+
+            //empêche le joueur d'aller plus loin que la taille de la page
+            if (_shipX > 0)
+            {
+                _shipX--;
             }
         }
         

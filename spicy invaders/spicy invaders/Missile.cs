@@ -25,6 +25,7 @@ namespace spicy_invaders
         private int _oldMissilePosition = 0;
 
 
+
         /// <summary>
         /// dessine le missile lorsqu'il est tiré
         /// </summary>
@@ -40,8 +41,9 @@ namespace spicy_invaders
         public void UpdateMissile()
         {
             //tant que le missile est dans le missile, continue à le mettre à jour
-            for(int i = Console.WindowHeight; i > 0; i--)
+            for(int i = Console.WindowHeight - 2; i > 0; i--)
             {
+
                 ClearMissile();
                 Console.SetCursorPosition(_missileX, _missileY);
                 Console.WriteLine(MISSILE);
@@ -52,32 +54,37 @@ namespace spicy_invaders
                 //incrémente la position Y du missile
                 _missileY--;
 
-                //
-                Thread.Sleep(100);
+                //donne la vitesse au missile
+                Thread.Sleep(25);
             }
 
             //lorsque le missile arrive tout en haut de la page, il disparaît
             ClearMissile();
         }
 
+        /// <summary>
+        /// efface le missile
+        /// </summary>
         private void ClearMissile()
         {
             Console.SetCursorPosition(_missileX, _oldMissilePosition);
             Console.WriteLine(" ");
         }
 
-        //permet d'accéder à la position X du missile pendant le jeu
-        public int MissileX
+        /// <summary>
+        /// tir du missile
+        /// </summary>
+        /// <param name="shipX">Position du vaisseau dans l'axe X lors du tir.</param>
+        /// <param name="shipY">Position du vaisseau dans l'axe Y lors du tir.</param>
+        public void FireMissile(int shipX, int shipY)
         {
-            get { return _missileX; }
-            set { _missileX = value; }  
+            //donne l'emplacement du missile à sa création
+            _missileX = shipX;
+            _missileY = shipY;
+            //dessine le missile lorsqu'il est tiré, puis le met à jour
+            DrawMissile();
+            UpdateMissile();
         }
 
-        //permet d'accéder à la position Y du missile pendant le jeu
-        public int MissileY
-        {
-            get { return _missileY; }
-            set { _missileY = value; }
-        }
     }
 }
