@@ -24,48 +24,46 @@ namespace spicy_invaders
         //ancienne position du missile
         private int _oldMissilePosition = 0;
 
-
+        //indique si le missile est en vie ou pas
+        private bool _isMissile = false;
 
         /// <summary>
         /// dessine le missile lorsqu'il est tiré
         /// </summary>
         public void DrawMissile()
         {
-            Console.SetCursorPosition(_missileX, _missileY);
-            Console.WriteLine(MISSILE);
+            if (_isMissile)
+            {
+                Console.SetCursorPosition(_missileX, _missileY);
+                Console.WriteLine(MISSILE);
+            }
         }
 
         /// <summary>
-        /// efface et redessine le missile lors de son avancement
+        /// actualise la position du missile
         /// </summary>
         public void UpdateMissile()
         {
-            //tant que le missile est dans le missile, continue à le mettre à jour
-            for(int i = Console.WindowHeight - 2; i > 0; i--)
+            if (_isMissile)
             {
-
-                ClearMissile();
-                Console.SetCursorPosition(_missileX, _missileY);
-                Console.WriteLine(MISSILE);
 
                 //garde la position du vaisseau pour l'effacer par la suite
                 _oldMissilePosition = _missileY;
 
                 //incrémente la position Y du missile
                 _missileY--;
-
-                //donne la vitesse au missile
-                Thread.Sleep(25);
             }
 
-            //lorsque le missile arrive tout en haut de la page, il disparaît
-            ClearMissile();
+            if(_missileY == -1)
+            {
+                _isMissile = false;
+            }
         }
 
         /// <summary>
         /// efface le missile
         /// </summary>
-        private void ClearMissile()
+        public void ClearMissile()
         {
             Console.SetCursorPosition(_missileX, _oldMissilePosition);
             Console.WriteLine(" ");
@@ -79,12 +77,17 @@ namespace spicy_invaders
         public void FireMissile(int shipX, int shipY)
         {
             //donne l'emplacement du missile à sa création
-            _missileX = shipX;
-            _missileY = shipY;
-            //dessine le missile lorsqu'il est tiré, puis le met à jour
-            DrawMissile();
-            UpdateMissile();
+            _missileX = shipX + 1;
+            _missileY = shipY - 1;
+
+            //indique que le missile est en vie
+            _isMissile=true;
         }
 
+        public bool IsMissile
+        {
+            get { return _isMissile; }
+            set { _isMissile = value; }
+        }
     }
 }

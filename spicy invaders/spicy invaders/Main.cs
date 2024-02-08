@@ -1,7 +1,7 @@
-﻿        /// ETML
-        /// Auteur : Dany Carneiro
-        /// Description : Jeu space invaders sur la console
-        /// Date : 18.01.2024
+﻿/// ETML
+/// Auteur : Dany Carneiro
+/// Description : Jeu space invaders sur la console
+/// Date : 18.01.2024
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,6 +23,9 @@ namespace spicy_invaders
             //choix du joueur dans les menus
             ConsoleKey _choice;
 
+            //tableau contenant les ennemis
+            List<Enemies> enemiesList = new List<Enemies>();
+
             //indique si le joueur veut quitter
             bool _quit = false;
 
@@ -32,6 +35,9 @@ namespace spicy_invaders
 
             //efface le curseur
             Console.CursorVisible = false;
+
+
+
 
             //permet de faire son choix à l'ouverture du jeu
             do
@@ -75,6 +81,7 @@ namespace spicy_invaders
 
             } while (_quit == false);
 
+
             ///méthode permettant d'afficher le menu
             void Menu()
             {
@@ -96,6 +103,7 @@ namespace spicy_invaders
             ///méthode permettant de lancer le jeu
             void Game()
             {
+
                 //efface le curseur
                 Console.CursorVisible = false;
 
@@ -114,36 +122,45 @@ namespace spicy_invaders
 
                 do
                 {
-                    _move = Console.ReadKey().Key;
+                    //lorsqu'aucune touche n'est pressée, actualise le missile
+                    while (!Console.KeyAvailable)
+                    {
+                        missile.UpdateMissile();
+                        missile.ClearMissile();
+                        missile.DrawMissile();
+                        Thread.Sleep(25);
+                    }
 
-                    //à chaque fois que le joueur appuie sur gauche ou droite, bouge le vaisseau dans la direction voulue
+                    //enregistre l'action du jour et bouge à droite, à gauche ou tire selon la touche pressée
+                    _move = Console.ReadKey(true).Key;
+
                     switch (_move)
                     {
-                        //déplacement à droite
                         case ConsoleKey.RightArrow:
 
                             ship.MoveRight();
                             break;
 
-                        //déplacement à gauche
                         case ConsoleKey.LeftArrow:
 
                             ship.MoveLeft();
                             break;
 
-                        //tire le missile
                         case ConsoleKey.Spacebar:
 
-                            missile.FireMissile(shipX: ship.PositionX + 1, shipY: ship.PositionY - 1);
-                            break;
-
-                        default:
+                            if (!missile.IsMissile)
+                            {
+                                missile.FireMissile(shipX: ship.PositionX, shipY: ship.PositionY);
+                            }
                             break;
                     }
 
-                    //efface uniquement le vaisseau pouis le redessine au bon endroit
+                    //efface ce qu'il y a à l'écran puis redessine
                     ship.ClearShip();
+                    missile.ClearMissile();
+
                     ship.DrawShip();
+                    missile.DrawMissile();
 
                 } while (_move != ConsoleKey.Escape);
             }
