@@ -27,6 +27,9 @@ namespace spicy_invaders
         //indique si le missile est en vie ou pas
         private bool _isMissile = false;
 
+        //instancie le vaisseau
+        SpaceShip ship = new SpaceShip();
+
         /// <summary>
         /// dessine le missile lorsqu'il est tiré
         /// </summary>
@@ -65,8 +68,17 @@ namespace spicy_invaders
         /// </summary>
         public void ClearMissile()
         {
+            if(_oldMissilePosition == 0 && _isMissile)
+            {
+                Console.SetCursorPosition(_missileX, ship.PositionY-1);
+                Console.WriteLine(" ");
+            }
+            else
+            {
             Console.SetCursorPosition(_missileX, _oldMissilePosition);
             Console.WriteLine(" ");
+
+            }
         }
 
         /// <summary>
@@ -88,6 +100,18 @@ namespace spicy_invaders
         {
             get { return _isMissile; }
             set { _isMissile = value; }
+        }
+
+        public int MissileX
+        {
+            get { return _missileX; }
+            set { _missileX = value; }
+        }
+
+        public int MissileY
+        {
+            get { return _missileY; }
+            set { _missileY = value; }
         }
     }
 }

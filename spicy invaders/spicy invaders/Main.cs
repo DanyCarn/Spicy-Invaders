@@ -7,24 +7,24 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
+using System.Windows.Input;
 
 namespace spicy_invaders
 {
+   
     internal class main
     {
+        [STAThread]
         static void Main(string[] args)
         {
             //largeur de la fenêtre
-            const int WINDOWWIDTH = 100;
+            const int WINDOWWIDTH = 80;
 
             //hauteur de la fenêtre
-            const int WINDOWHEIGHT = 35;
+            const int WINDOWHEIGHT = 24;
 
             //choix du joueur dans les menus
             ConsoleKey _choice;
-
-            //tableau contenant les ennemis
-            List<Enemies> enemiesList = new List<Enemies>();
 
             //indique si le joueur veut quitter
             bool _quit = false;
@@ -35,8 +35,6 @@ namespace spicy_invaders
 
             //efface le curseur
             Console.CursorVisible = false;
-
-
 
 
             //permet de faire son choix à l'ouverture du jeu
@@ -93,76 +91,18 @@ namespace spicy_invaders
                                   "    SPICY INVADERS    \n" +
                                   "**********************\n");
 
-                Console.WriteLine("(1) Jouer");
-                Console.WriteLine("(2) Options");
-                Console.WriteLine("(3) Highscore");
-                Console.WriteLine("(4) A propos");
-                Console.WriteLine("(5) Quitter");
+                Console.WriteLine("     (1) Jouer");
+                Console.WriteLine("     (2) Options");
+                Console.WriteLine("     (3) Highscore");
+                Console.WriteLine("     (4) A propos");
+                Console.WriteLine("     (5) Quitter");
             }
 
             ///méthode permettant de lancer le jeu
             void Game()
             {
-
-                //efface le curseur
-                Console.CursorVisible = false;
-
-                //indique le déplacement que le joueur veut faire pendant le jeu (gauche ou droite)
-                ConsoleKey _move;
-
-                //instancie le vaisseau
-                SpaceShip ship = new SpaceShip();
-
-                //instancie l'objet missile
-                Missile missile = new Missile();
-
-                //nettoie la console et affiche le vaisseau
-                Console.Clear();
-                ship.DrawShip();
-
-                do
-                {
-                    //lorsqu'aucune touche n'est pressée, actualise le missile
-                    while (!Console.KeyAvailable)
-                    {
-                        missile.UpdateMissile();
-                        missile.ClearMissile();
-                        missile.DrawMissile();
-                        Thread.Sleep(25);
-                    }
-
-                    //enregistre l'action du jour et bouge à droite, à gauche ou tire selon la touche pressée
-                    _move = Console.ReadKey(true).Key;
-
-                    switch (_move)
-                    {
-                        case ConsoleKey.RightArrow:
-
-                            ship.MoveRight();
-                            break;
-
-                        case ConsoleKey.LeftArrow:
-
-                            ship.MoveLeft();
-                            break;
-
-                        case ConsoleKey.Spacebar:
-
-                            if (!missile.IsMissile)
-                            {
-                                missile.FireMissile(shipX: ship.PositionX, shipY: ship.PositionY);
-                            }
-                            break;
-                    }
-
-                    //efface ce qu'il y a à l'écran puis redessine
-                    ship.ClearShip();
-                    missile.ClearMissile();
-
-                    ship.DrawShip();
-                    missile.DrawMissile();
-
-                } while (_move != ConsoleKey.Escape);
+                Game game = new Game();
+                game.GameMethod();
             }
 
             ///page d'options
@@ -208,6 +148,7 @@ namespace spicy_invaders
                 Console.WriteLine("En construction...");
                 Console.ReadLine();
             }
+
         }
     }
 }

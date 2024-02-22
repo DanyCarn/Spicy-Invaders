@@ -27,6 +27,9 @@ namespace spicy_invaders
         //La position du vaisseau avant le déplacement
         private int _oldXPosition = 0;
 
+        //indique si le joueur est en vie
+        private bool _shipAlive = true;
+
 
         /// <summary>
         /// affiche le vaisseau
@@ -98,10 +101,22 @@ namespace spicy_invaders
             set { _oldXPosition = value; }
         }
 
+        /// <summary>
+        /// position dans l'axe y du joueur
+        /// </summary>
         public int PositionY
         {
             get { return _shipY; }
             set { _shipY = value; }
+        }
+
+        /// <summary>
+        /// permet d'obtenir l'information si le joueur est en vie
+        /// </summary>
+        public bool ShipAlive
+        {
+            get { return _shipAlive; }
+            set { _shipAlive = value; }
         }
     }
 }
