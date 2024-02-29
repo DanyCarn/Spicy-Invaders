@@ -53,13 +53,14 @@ namespace spicy_invaders
                 //garde la position du vaisseau pour l'effacer par la suite
                 _oldMissilePosition = _missileY;
 
-                //incrémente la position Y du missile
+                //décrémente la position Y du missile pour monter
                 _missileY--;
             }
 
             if(_missileY == -1)
             {
                 _isMissile = false;
+                ClearMissile();
             }
         }
 

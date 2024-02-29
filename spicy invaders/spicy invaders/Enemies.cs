@@ -16,6 +16,9 @@ namespace spicy_invaders
         //sprite des ennemis 
         private const string ENEMY = "+-+";
 
+        //taille des ennemis
+        private const int ENEMY_SIZE = 3;
+
         //la position de l'ennemi
         private int _positionX = 0;
         private int _positionY = 0;
@@ -23,13 +26,9 @@ namespace spicy_invaders
         //vie de l'ennemi
         private int _enemyLife = 1;
 
-        /// <summary>
-        /// constructeur 
-        /// </summary>
-        public Enemies()
-        {
-
-        }
+        //direction de l'ennemi
+        private bool _goingLeft = false;
+        private bool _goingRight = true;
 
         /// <summary>
         /// constructeur de l'objet des ennemis
@@ -45,10 +44,46 @@ namespace spicy_invaders
         /// <summary>
         /// dessine les vaisseaux ennemis
         /// </summary>
-        public void drawEnemy()
+        public void DrawEnemy()
         {
-            Console.SetCursorPosition(_positionX, _positionY);
-            Console.WriteLine(ENEMY);
+            if(_enemyLife > 0)
+            {
+                Console.SetCursorPosition(_positionX, _positionY);
+                Console.WriteLine(ENEMY);
+            }
+            else
+            {
+
+            }
+        }
+
+        /// <summary>
+        /// efface le sprite de l'ennemi
+        /// </summary>
+        public void ClearEnemy()
+        {
+            for(int i = 0; i < ENEMY_SIZE; i++)
+            {
+                Console.SetCursorPosition(_positionX + i, _positionY);
+                Console.WriteLine(' ');
+            }
+        }
+
+        public void UpdateEnemy()
+        {
+            //déplacement de l'ennemi si il se dirige à droite
+            if (_goingRight)
+            {
+                //actualise la position de l'ennemi
+                _positionX += 1;
+            }
+
+            //déplacement de l'ennemi si il se dirige à gauche
+            else if (_goingLeft)
+            {
+                //actualise la position de l'ennemi
+                _positionX -= 1;
+            }
         }
 
         public int EnemyX
@@ -61,6 +96,24 @@ namespace spicy_invaders
         {
             get { return _positionY; }
             set { _positionY = value; }
+        }
+
+        public bool GoingLeft
+        {
+            get { return _goingLeft; }
+            set { _goingLeft = value; }
+        }
+
+        public bool GoingRight
+        {
+            get { return _goingRight; }
+            set { _goingRight = value; }
+        }
+
+        public int Life
+        {
+            get { return _enemyLife; }
+            set { _enemyLife = value; }
         }
     }
 }

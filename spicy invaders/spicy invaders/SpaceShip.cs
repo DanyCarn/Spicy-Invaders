@@ -48,8 +48,8 @@ namespace spicy_invaders
             //remplace les symboles du vaisseau pour les remplacer par du vide afin d'effacer uniquement le vaisseau et laisser le reste de la console
             for(int i = 0; i < SHIPSIZE; i++)
             {
-            Console.SetCursorPosition(_oldXPosition + i, _shipY);
-            Console.WriteLine(" ");
+                Console.SetCursorPosition(_oldXPosition + i, _shipY);
+                Console.WriteLine(" ");
             }
         }
 
