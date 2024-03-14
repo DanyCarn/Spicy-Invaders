@@ -19,10 +19,10 @@ namespace spicy_invaders
         static void Main(string[] args)
         {
             //largeur de la fenêtre
-            const int WINDOWWIDTH = 80;
+            const int WINDOWWIDTH = 111;
 
             //hauteur de la fenêtre
-            const int WINDOWHEIGHT = 24;
+            const int WINDOWHEIGHT = 20;
 
             //choix du joueur dans les menus
             ConsoleKey _choice;
@@ -88,14 +88,21 @@ namespace spicy_invaders
                 Console.Clear();
 
                 //affiche le menu du jeu
-                Console.WriteLine("**********************\n" +
-                                  "    SPICY INVADERS    \n" +
-                                  "**********************\n");
-
+                Console.SetCursorPosition(WINDOWWIDTH / 2 - 12, 0);
+                Console.WriteLine("**********************");
+                Console.SetCursorPosition(WINDOWWIDTH / 2 - 12, 1);
+                Console.WriteLine("    SPICY INVADERS    ");
+                Console.SetCursorPosition(WINDOWWIDTH / 2 - 12, 2);
+                Console.WriteLine("**********************");
+                Console.SetCursorPosition(WINDOWWIDTH / 2 - 12, 4);
                 Console.WriteLine("     (1) Jouer");
+                Console.SetCursorPosition(WINDOWWIDTH / 2 - 12, 5);
                 Console.WriteLine("     (2) Options");
+                Console.SetCursorPosition(WINDOWWIDTH / 2 - 12, 6);
                 Console.WriteLine("     (3) Highscore");
+                Console.SetCursorPosition(WINDOWWIDTH / 2 - 12, 7);
                 Console.WriteLine("     (4) A propos");
+                Console.SetCursorPosition(WINDOWWIDTH / 2 - 12, 8);
                 Console.WriteLine("     (5) Quitter");
             }
 
@@ -146,7 +153,7 @@ namespace spicy_invaders
             void About()
             {
                 Console.Clear();
-                Console.WriteLine("En construction...");
+                Console.WriteLine("Le but de Spicy Invaders est de détruire tous les vaisseaux ennemis avant \n" + "qu'ils ne vous atteignent ! Bonne chance :)");
                 Console.ReadLine();
             }
 

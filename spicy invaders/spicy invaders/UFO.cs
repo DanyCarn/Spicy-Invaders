@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace spicy_invaders
 {
-    internal abstract class Enemies
+    internal class UFO : Enemies
     {
-
+        private const string SPRITE = "◅◯▻";
     }
 }

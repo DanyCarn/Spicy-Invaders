@@ -19,16 +19,22 @@ namespace spicy_invaders
         private const int SHIPSIZE = 3;
 
         //position de départ dans l'axe X pour le vaisseau
-        private int _shipX = Console.WindowWidth / 2; 
+        private int _shipX = Console.WindowWidth / 2;
+        public int PositionX { get { return _oldXPosition; } set { _oldXPosition = value; } }
+
 
         //position de départ dans l'axe Y pour le vaisseau
         private int _shipY = Console.WindowHeight - 2 ;
+        public int PositionY { get { return _shipY; } set { _shipY = value; } }
 
         //La position du vaisseau avant le déplacement
         private int _oldXPosition = 0;
+        public int OldPosition { get { return _oldXPosition; } set {_oldXPosition = value; } }
+
 
         //indique si le joueur est en vie
         private bool _shipAlive = true;
+        public bool ShipAlive { get { return _shipAlive; } set { _shipAlive = value; } }
 
 
         /// <summary>
@@ -81,42 +87,6 @@ namespace spicy_invaders
             {
                 _shipX--;
             }
-        }
-        
-        /// <summary>
-        /// permet d'accéder à la position du viasseau pendant le jeu
-        /// </summary>
-        public int PositionX
-        {
-            get { return _shipX; }
-            set { _shipX = value; }
-        }
-
-        /// <summary>
-        /// permet d'obtenir la position du vaisseau avant le déplacement
-        /// </summary>
-        public int OldPosition
-        {
-            get { return _oldXPosition; }
-            set { _oldXPosition = value; }
-        }
-
-        /// <summary>
-        /// position dans l'axe y du joueur
-        /// </summary>
-        public int PositionY
-        {
-            get { return _shipY; }
-            set { _shipY = value; }
-        }
-
-        /// <summary>
-        /// permet d'obtenir l'information si le joueur est en vie
-        /// </summary>
-        public bool ShipAlive
-        {
-            get { return _shipAlive; }
-            set { _shipAlive = value; }
         }
     }
 }

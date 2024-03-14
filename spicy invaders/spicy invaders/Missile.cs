@@ -17,15 +17,18 @@ namespace spicy_invaders
 
         //position du missile dans l'axe X
         private int _missileX = 0;
+        public int MissileX { get { return _missileX; } set { _missileX = value; } }
 
         //position du missile dans l'axe Y
         private int _missileY = 0;
+        public int MissileY { get { return _missileY; } set { _missileY = value; } }
 
         //ancienne position du missile
         private int _oldMissilePosition = 0;
 
         //indique si le missile est en vie ou pas
         private bool _isMissile = false;
+        public bool IsMissile { get { return _isMissile; } set { _isMissile = value; } }
 
         //instancie le vaisseau
         SpaceShip ship = new SpaceShip();
@@ -57,10 +60,11 @@ namespace spicy_invaders
                 _missileY--;
             }
 
-            if(_missileY == -1)
+            //si le missile arrive en haut
+            if(_missileY == 0)
             {
-                _isMissile = false;
                 ClearMissile();
+                _isMissile = false;
             }
         }
 
@@ -74,7 +78,7 @@ namespace spicy_invaders
                 Console.SetCursorPosition(_missileX, ship.PositionY-1);
                 Console.WriteLine(" ");
             }
-            else
+            else if(_isMissile)
             {
             Console.SetCursorPosition(_missileX, _oldMissilePosition);
             Console.WriteLine(" ");
@@ -90,29 +94,11 @@ namespace spicy_invaders
         public void FireMissile(int shipX, int shipY)
         {
             //donne l'emplacement du missile à sa création
-            _missileX = shipX + 1;
+            _missileX = shipX + 2;
             _missileY = shipY - 1;
 
-            //indique que le missile est en vie
-            _isMissile=true;
-        }
-
-        public bool IsMissile
-        {
-            get { return _isMissile; }
-            set { _isMissile = value; }
-        }
-
-        public int MissileX
-        {
-            get { return _missileX; }
-            set { _missileX = value; }
-        }
-
-        public int MissileY
-        {
-            get { return _missileY; }
-            set { _missileY = value; }
+            //indique qu'il y a un missile
+            _isMissile = true;
         }
     }
 }

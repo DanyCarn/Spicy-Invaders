@@ -14,3 +14,11 @@ E:\P_SpicyInvaders\spicy invaders\spicy invaders\obj\Debug\spicy invaders.csproj
 E:\P_SpicyInvaders\spicy invaders\spicy invaders\obj\Debug\spicy invaders.csproj.CoreCompileInputs.cache
 E:\P_SpicyInvaders\spicy invaders\spicy invaders\obj\Debug\spicy invaders.exe
 E:\P_SpicyInvaders\spicy invaders\spicy invaders\obj\Debug\spicy invaders.pdb
+D:\Semestre 3\P_SpicyInvaders\spicy invaders\spicy invaders\bin\Debug\spicy invaders.exe.config
+D:\Semestre 3\P_SpicyInvaders\spicy invaders\spicy invaders\bin\Debug\spicy invaders.exe
+D:\Semestre 3\P_SpicyInvaders\spicy invaders\spicy invaders\bin\Debug\spicy invaders.pdb
+D:\Semestre 3\P_SpicyInvaders\spicy invaders\spicy invaders\obj\Debug\spicy invaders.csproj.AssemblyReference.cache
+D:\Semestre 3\P_SpicyInvaders\spicy invaders\spicy invaders\obj\Debug\spicy invaders.csproj.SuggestedBindingRedirects.cache
+D:\Semestre 3\P_SpicyInvaders\spicy invaders\spicy invaders\obj\Debug\spicy invaders.csproj.CoreCompileInputs.cache
+D:\Semestre 3\P_SpicyInvaders\spicy invaders\spicy invaders\obj\Debug\spicy invaders.exe
+D:\Semestre 3\P_SpicyInvaders\spicy invaders\spicy invaders\obj\Debug\spicy invaders.pdb
