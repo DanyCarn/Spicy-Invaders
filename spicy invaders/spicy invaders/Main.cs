@@ -22,7 +22,7 @@ namespace spicy_invaders
             const int WINDOWWIDTH = 111;
 
             //hauteur de la fenêtre
-            const int WINDOWHEIGHT = 20;
+            const int WINDOWHEIGHT = 35;
 
             //choix du joueur dans les menus
             ConsoleKey _choice;
@@ -36,6 +36,9 @@ namespace spicy_invaders
 
             //efface le curseur
             Console.CursorVisible = false;
+
+            // Désactive le scrolling
+            Console.SetBufferSize(Console.WindowWidth, Console.WindowHeight);
 
 
             //permet de faire son choix à l'ouverture du jeu

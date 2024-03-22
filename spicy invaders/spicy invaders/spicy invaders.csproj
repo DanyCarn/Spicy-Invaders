@@ -46,9 +46,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Barricade.cs" />
+    <Compile Include="Enemies.cs" />
     <Compile Include="UFO.cs" />
     <Compile Include="Crab.cs" />
-    <Compile Include="Enemies.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="Squid.cs" />
     <Compile Include="Missile.cs" />

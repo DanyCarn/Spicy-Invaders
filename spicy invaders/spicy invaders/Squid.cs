@@ -106,5 +106,6 @@ namespace spicy_invaders
                 _positionX -= 1;
             }
         }
+
     }
 }

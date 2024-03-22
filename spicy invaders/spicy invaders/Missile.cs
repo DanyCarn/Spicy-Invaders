@@ -63,6 +63,7 @@ namespace spicy_invaders
             //si le missile arrive en haut
             if(_missileY == 0)
             {
+                //efface le missile et le désactive
                 ClearMissile();
                 _isMissile = false;
             }
@@ -94,7 +95,7 @@ namespace spicy_invaders
         public void FireMissile(int shipX, int shipY)
         {
             //donne l'emplacement du missile à sa création
-            _missileX = shipX + 2;
+            _missileX = shipX + 1;
             _missileY = shipY - 1;
 
             //indique qu'il y a un missile
