@@ -8,7 +8,9 @@ namespace spicy_invaders
 {
     internal class Game
     {
-        //nombre d'ennemis
+        /// <summary>
+        /// nombre d'ennemis
+        /// </summary>
         const int MAX_ENEMIES = 24;
 
         /// <summary>
@@ -16,30 +18,70 @@ namespace spicy_invaders
         /// </summary>
         private int _score = 0;
 
-        //liste des listes d'ennemis
-        private List<List<Squid>> _allEnemies = new List<List<Squid>>();
+        /// <summary>
+        /// liste des listes d'ennemis
+        /// </summary>
+        private List<List<Enemy>> _allEnemies;
 
-        //listes contenant les ennemis de chaque ligne
-        private List <Squid> _enemiesRow1 = new List <Squid>();
-        private List <Squid> _enemiesRow2 = new List <Squid>();
-        private List <Squid> _enemiesRow3 = new List <Squid>();
+        /// <summary>
+        /// listes contenant les ennemis de chaque ligne
+        /// </summary>
+        private List <Enemy> _enemiesRow1;
+        private List <Enemy> _enemiesRow2;
+        private List <Enemy> _enemiesRow3;
 
 
-        //liste des listes de barricades
-        private List<List<Barricade>> _allBunkers = new List<List <Barricade>>();
+        /// <summary>
+        /// liste des listes de barricades
+        /// </summary>
+        private List<List<Barricade>> _allBunkers;
         
-        //listes contenant les barricades
-        private List <Barricade> _bunker1 = new List<Barricade>();
-        private List <Barricade> _bunker2 = new List<Barricade>();
+        /// <summary>
+        /// listes contenant les barricades
+        /// </summary>
+        private List <Barricade> _bunker1;
+        private List <Barricade> _bunker2;
 
-        //instancie le vaisseau
-        private SpaceShip _ship = new SpaceShip();
+        /// <summary>
+        /// liste des missiles
+        /// </summary>
+        private List<Missile> _missiles;
+        public List <Missile> Missiles { get { return _missiles; } set { _missiles = value; } }
 
-        //instancie l'objet missile
-        private Missile _missile = new Missile();
+        /// <summary>
+        /// vaisseau
+        /// </summary>
+        private SpaceShip _ship;
 
-        //fin de partie
+        /// <summary>
+        /// missile du joueur
+        /// </summary>
+        private Missile _missile;
+
+        /// <summary>
+        /// fin de partie
+        /// </summary>
         private bool _endGame = false;
+
+        public Game()
+        {
+            _ship = new SpaceShip();
+
+            _missile = new Missile(_ship);
+
+            _bunker1 = new List<Barricade>();
+            _bunker2 = new List<Barricade>();
+
+            _allBunkers = new List<List<Barricade>>();
+
+            _enemiesRow1 = new List<Enemy>();
+            _enemiesRow2 = new List<Enemy>();
+            _enemiesRow3 = new List<Enemy>();
+
+            _allEnemies = new List<List<Enemy>>();
+
+            _missiles = new List<Missile>();
+        }
 
         /// <summary>
         /// activité dans le jeu en direct
@@ -62,17 +104,17 @@ namespace spicy_invaders
             {
                 if (i < 8)
                 {
-                    Squid enemy = new Squid(1 + (i * 4), 1);
+                    Enemy enemy = new Enemy(1 + (i * 4), 1, this);
                     _enemiesRow1.Add(enemy);
                 }
                 else if (i < 16)
                 {
-                    Squid enemy = new Squid(1 + ((i - 8) * 4), 2);
+                    Enemy enemy = new Enemy(1 + ((i - 8) * 4), 2, this);
                     _enemiesRow2.Add(enemy);
                 }
                 else if (i < MAX_ENEMIES)
                 {
-                    Squid enemy = new Squid(1 + ((i - 16) * 4), 3);
+                    Enemy enemy = new Enemy(1 + ((i - 16) * 4), 3, this);
                     _enemiesRow3.Add(enemy);
                 }
             }
@@ -112,6 +154,8 @@ namespace spicy_invaders
                 //actualise le missile
                 _missile.UpdateMissile();
 
+                UpdateMissiles();
+
                 //mouvement du joueur
                 if (Keyboard.IsKeyDown(Key.Left))
                 {
@@ -122,7 +166,7 @@ namespace spicy_invaders
                         //si le joueur bouge et tire en même temps tire un missile sans arrêter la course
                         if (!_missile.IsMissile)
                         {
-                            _missile.FireMissile(shipX: _ship.PositionX, shipY: _ship.PositionY);
+                            _missile.FireMissile(posX: _ship.PositionX, posY: _ship.PositionY);
                         }
                     }
                 }
@@ -136,7 +180,7 @@ namespace spicy_invaders
                     {
                         if (!_missile.IsMissile)
                         {
-                            _missile.FireMissile(shipX: _ship.PositionX, shipY: _ship.PositionY);
+                            _missile.FireMissile(posX: _ship.PositionX, posY: _ship.PositionY);
                         }
                     }
                 }
@@ -146,7 +190,7 @@ namespace spicy_invaders
                 {
                     if (!_missile.IsMissile)
                     {
-                        _missile.FireMissile(shipX: _ship.PositionX, shipY: _ship.PositionY);
+                        _missile.FireMissile(posX: _ship.PositionX, posY: _ship.PositionY);
                     }
                 }
 
@@ -194,9 +238,13 @@ namespace spicy_invaders
         {
             _ship.ClearShip();
             _missile.ClearMissile();
-            foreach(List<Squid> enemyList in _allEnemies)
+            foreach (Missile missile in _missiles)
             {
-                foreach (Squid enemy in enemyList)
+                missile.ClearMissile();
+            }
+            foreach (List<Enemy> enemyList in _allEnemies)
+            {
+                foreach (Enemy enemy in enemyList)
                 {
                     enemy.ClearEnemy();
                 }
@@ -210,9 +258,13 @@ namespace spicy_invaders
         {
             _ship.DrawShip();
             _missile.DrawMissile();
-            foreach(List<Squid> enemyList in _allEnemies)
+            foreach(Missile missile in _missiles)
             {
-                foreach (Squid enemy in enemyList)
+                missile.DrawMissile();
+            }
+            foreach(List<Enemy> enemyList in _allEnemies)
+            {
+                foreach (Enemy enemy in enemyList)
                 {
                     enemy.DrawEnemy();
                 }
@@ -225,9 +277,9 @@ namespace spicy_invaders
         /// </summary>
         private void CheckEnemyHit()
         {
-            foreach(List<Squid> enemyList in _allEnemies)
+            foreach(List<Enemy> enemyList in _allEnemies)
             {
-                foreach (Squid enemy in enemyList)
+                foreach (Enemy enemy in enemyList)
                 {
                     if (enemy.EnemyY == _missile.MissileY && enemy.EnemyX == _missile.MissileX || enemy.EnemyY == _missile.MissileY && enemy.EnemyX + 1 == _missile.MissileX || enemy.EnemyY == _missile.MissileY && enemy.EnemyX + 2 == _missile.MissileX || enemy.EnemyY == _missile.MissileY && enemy.EnemyX + 3 == _missile.MissileX)
                     {
@@ -260,30 +312,36 @@ namespace spicy_invaders
 
             if ((_enemiesRow1 != null && _enemiesRow1.Any() && _enemiesRow1.Last().EnemyX == Console.WindowWidth - 3) || (_enemiesRow2 != null && _enemiesRow2.Any() && _enemiesRow2.Last().EnemyX == Console.WindowWidth - 3) || (_enemiesRow3 != null && _enemiesRow3.Any() && _enemiesRow3.Last().EnemyX == Console.WindowWidth - 3))
             {
-                foreach (List<Squid> enemyList in _allEnemies)
+                foreach (List<Enemy> enemyList in _allEnemies)
                 {
-                    foreach (Squid enemy in enemyList)
+                    foreach (Enemy enemy in enemyList)
                     {
-                        enemy.GoingRight = false;
-                        enemy.GoingLeft = true;
+                        if(enemy.EnemySpeed == 1)
+                        {
+                            enemy.GoingRight = false;
+                            enemy.GoingLeft = true;
 
-                        enemy.ClearEnemy();
-                        enemy.EnemyY++;
+                            enemy.ClearEnemy();
+                            enemy.EnemyY++;
+                        }
                     }
                 }
             }
 
             else if ((_enemiesRow1 != null && _enemiesRow1.Any() && _enemiesRow1.First().EnemyX == 1) || (_enemiesRow2 != null && _enemiesRow2.Any() && _enemiesRow2.First().EnemyX == 1) || (_enemiesRow3 != null && _enemiesRow3.Any() && _enemiesRow3.First().EnemyX == 1))
             {
-                foreach(List<Squid> enemyList in _allEnemies)
+                foreach(List<Enemy> enemyList in _allEnemies)
                 {
-                    foreach (Squid enemy in enemyList)
+                    foreach (Enemy enemy in enemyList)
                     {
-                        enemy.GoingRight = true;
-                        enemy.GoingLeft = false;
+                        if(enemy.EnemySpeed == 1)
+                        {
+                            enemy.GoingRight = true;
+                            enemy.GoingLeft = false;
 
-                        enemy.ClearEnemy();
-                        enemy.EnemyY++;
+                            enemy.ClearEnemy();
+                            enemy.EnemyY++;
+                        }
                     }
                 }
             }
@@ -295,9 +353,9 @@ namespace spicy_invaders
         /// </summary>
         private void UpdateAllEnemies()
         {
-            foreach(List<Squid> enemyList in _allEnemies)
+            foreach(List<Enemy> enemyList in _allEnemies)
             {
-                foreach (Squid enemy in enemyList)
+                foreach (Enemy enemy in enemyList)
                 {
                     enemy.UpdateEnemy();
                 }
@@ -330,6 +388,9 @@ namespace spicy_invaders
             }
         }
 
+        /// <summary>
+        /// vérifie si le missile allié a touché un bunker
+        /// </summary>
         private void CheckBunkerHit()
         {
             foreach (List<Barricade> barricadeList in _allBunkers)
@@ -352,6 +413,14 @@ namespace spicy_invaders
                     }
                 }
 
+            }
+        }
+
+        private void UpdateMissiles()
+        {
+            foreach(Missile missile in _missiles)
+            {
+                missile.UpdateMissile();
             }
         }
     }

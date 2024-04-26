@@ -68,7 +68,7 @@ namespace spicy_invaders
             _oldXPosition = _shipX;
 
             //empêche le joueur d'aller plus loin que la taille de la page
-            if (_shipX < Console.WindowWidth - 3)
+            if (_shipX < Console.WindowWidth - 4)
             {
                 _shipX++;
             }

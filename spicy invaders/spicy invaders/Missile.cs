@@ -12,26 +12,65 @@ namespace spicy_invaders
 {
     internal class Missile
     {
-        //sprite du missile
+        /// <summary>
+        /// sprite du missile
+        /// </summary>
         private const string MISSILE = "|";
 
-        //position du missile dans l'axe X
+        /// <summary>
+        /// position du missile dans l'axe X
+        /// </summary>
         private int _missileX = 0;
         public int MissileX { get { return _missileX; } set { _missileX = value; } }
 
-        //position du missile dans l'axe Y
+        /// <summary>
+        /// position du missile dans l'axe Y
+        /// </summary>
         private int _missileY = 0;
         public int MissileY { get { return _missileY; } set { _missileY = value; } }
 
-        //ancienne position du missile
+        /// <summary>
+        /// ancienne position du missile
+        /// </summary>
         private int _oldMissilePosition = 0;
 
-        //indique si le missile est en vie ou pas
+        /// <summary>
+        /// indique si le missile est en vie ou pas
+        /// </summary>
         private bool _isMissile = false;
         public bool IsMissile { get { return _isMissile; } set { _isMissile = value; } }
+        
+        /// <summary>
+        /// indique si le missile tiré a été tiré par un ennemi ou un allié
+        /// </summary>
+        private bool _isAlly;
 
-        //instancie le vaisseau
-        SpaceShip ship = new SpaceShip();
+        /// <summary>
+        /// le vaisseau du joueur
+        /// </summary>
+        private SpaceShip _ship;
+
+        /// <summary>
+        /// l'ennemi qui tire
+        /// </summary>
+        private Enemy _enemy;
+
+        /// <summary>
+        /// constructeur du missile
+        /// </summary>
+        /// <param name="ship">le vaisseau du joueur</param>
+        public Missile(SpaceShip ship)
+        {
+            _ship = ship;
+            _isAlly = true;
+        }
+
+        public Missile(Enemy enemy)
+        {
+            _enemy = enemy;
+            _isAlly = false;
+        }
+
 
         /// <summary>
         /// dessine le missile lorsqu'il est tiré
@@ -56,12 +95,26 @@ namespace spicy_invaders
                 //garde la position du vaisseau pour l'effacer par la suite
                 _oldMissilePosition = _missileY;
 
-                //décrémente la position Y du missile pour monter
-                _missileY--;
+                if (_isAlly)
+                {
+                    //décrémente la position Y du missile pour monter
+                    _missileY--;
+                }
+                else
+                {
+                    //incrémente la position Y du missile ennemi
+                    _missileY++;
+                }
             }
 
             //si le missile arrive en haut
-            if(_missileY == 0)
+            if(_missileY == 0 && _isAlly)
+            {
+                //efface le missile et le désactive
+                ClearMissile();
+                _isMissile = false;
+            }
+            else if(_missileY == 24)
             {
                 //efface le missile et le désactive
                 ClearMissile();
@@ -76,7 +129,14 @@ namespace spicy_invaders
         {
             if(_oldMissilePosition == 0 && _isMissile)
             {
-                Console.SetCursorPosition(_missileX, ship.PositionY-1);
+                if (_isAlly)
+                {
+                    Console.SetCursorPosition(_missileX, _ship.PositionY-1);
+                }
+                else
+                {
+                    Console.SetCursorPosition(_missileX, _enemy.EnemyY + 1);
+                }
                 Console.WriteLine(" ");
             }
             else if(_isMissile)
@@ -90,13 +150,20 @@ namespace spicy_invaders
         /// <summary>
         /// tir du missile
         /// </summary>
-        /// <param name="shipX">Position du vaisseau dans l'axe X lors du tir.</param>
-        /// <param name="shipY">Position du vaisseau dans l'axe Y lors du tir.</param>
-        public void FireMissile(int shipX, int shipY)
+        /// <param name="posX">Position du vaisseau dans l'axe X lors du tir.</param>
+        /// <param name="posY">Position du vaisseau dans l'axe Y lors du tir.</param>
+        public void FireMissile(int posX, int posY)
         {
             //donne l'emplacement du missile à sa création
-            _missileX = shipX + 1;
-            _missileY = shipY - 1;
+            _missileX = posX + 1;
+            if (_isAlly)
+            {
+                _missileY = posY - 1;
+            }
+            else
+            {
+                _missileY = posY + 1;
+            }
 
             //indique qu'il y a un missile
             _isMissile = true;

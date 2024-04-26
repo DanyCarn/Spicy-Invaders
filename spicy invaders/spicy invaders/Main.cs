@@ -22,7 +22,7 @@ namespace spicy_invaders
             const int WINDOWWIDTH = 111;
 
             //hauteur de la fenêtre
-            const int WINDOWHEIGHT = 35;
+            const int WINDOWHEIGHT = 25;
 
             //choix du joueur dans les menus
             ConsoleKey _choice;
