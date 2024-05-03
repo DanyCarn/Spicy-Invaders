@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading;
 using System.Windows.Input;
 
@@ -34,13 +35,8 @@ namespace spicy_invaders
         /// <summary>
         /// liste des listes de barricades
         /// </summary>
-        private List<List<Barricade>> _allBunkers;
+        private List<Bunker> _allBunkers;
         
-        /// <summary>
-        /// listes contenant les barricades
-        /// </summary>
-        private List <Barricade> _bunker1;
-        private List <Barricade> _bunker2;
 
         /// <summary>
         /// liste des missiles
@@ -63,16 +59,28 @@ namespace spicy_invaders
         /// </summary>
         private bool _endGame = false;
 
+        /// <summary>
+        /// l'aléatoire utilisé pour déterminer si un ennemi va tirer
+        /// </summary>
+        private Random _random = new Random();
+
+        /// <summary>
+        /// l'index de l'ennemi qui tire
+        /// </summary>
+        private int _enemyToShoot;
+
+        /// <summary>
+        /// la probailité qu'un ennemi tire
+        /// </summary>
+        private int _shootRate = 350;
+
         public Game()
         {
             _ship = new SpaceShip();
 
             _missile = new Missile(_ship);
 
-            _bunker1 = new List<Barricade>();
-            _bunker2 = new List<Barricade>();
-
-            _allBunkers = new List<List<Barricade>>();
+            _allBunkers = new List<Bunker>();
 
             _enemiesRow1 = new List<Enemy>();
             _enemiesRow2 = new List<Enemy>();
@@ -80,7 +88,11 @@ namespace spicy_invaders
 
             _allEnemies = new List<List<Enemy>>();
 
-            _missiles = new List<Missile>();
+            //isntancie la liste de missiles et y ajoute le missile du joueur
+            _missiles = new List<Missile>
+            {
+                _missile
+            };
         }
 
         /// <summary>
@@ -91,13 +103,10 @@ namespace spicy_invaders
             //efface le curseur
             Console.CursorVisible = false;
 
-
             _allEnemies.Add(_enemiesRow1);
             _allEnemies.Add(_enemiesRow2);
             _allEnemies.Add(_enemiesRow3);
 
-            _allBunkers.Add(_bunker1);
-            _allBunkers.Add(_bunker2);
 
             //intsancie les ennemis
             for (int i = 0; i < 24; i++)
@@ -120,21 +129,21 @@ namespace spicy_invaders
             }
 
             //instancie les bunker
-            for (int i = 0;i < _allBunkers.Count;i++)
+            for (int i = 0; i < 2; i++)
             {
                 for (int j = 0; j < Console.WindowWidth; j++)
                 {
                     if(j>15 && j<32)
                     {
-                        _allBunkers[i].Add(new Barricade(j, Console.WindowHeight - 4 - i));
+                        _allBunkers.Add(new Bunker(j, Console.WindowHeight - 5 - i));
                     }
                     else if(j>47 && j < 64)
                     {
-                        _allBunkers[i].Add(new Barricade(j, Console.WindowHeight - 4 - i));
+                        _allBunkers.Add(new Bunker(j, Console.WindowHeight - 5 - i));
                     }
                     else if(j>79 && j< 96)
                     {
-                        _allBunkers[i].Add(new Barricade(j, Console.WindowHeight - 4 - i));
+                        _allBunkers.Add(new Bunker(j, Console.WindowHeight - 5 - i));
                     }
                 }
             }
@@ -143,6 +152,7 @@ namespace spicy_invaders
             Console.Clear();
             DrawAll();
             DrawAllBunkers();
+            _ship.DrawLife();
 
             do
             {
@@ -151,9 +161,8 @@ namespace spicy_invaders
                 //affiche le score
                 ShowScore(0,0);
 
-                //actualise le missile
-                _missile.UpdateMissile();
 
+                //actualise les missiles
                 UpdateMissiles();
 
                 //mouvement du joueur
@@ -196,27 +205,26 @@ namespace spicy_invaders
 
 
                 CheckBunkerHit();
-                CheckEnemyHit();
+                //CheckEnemyHit();
                 EnemiesChangeDirection();
 
                 ClearAll();
 
                 //conditions de fin de jeu
-                if(_enemiesRow1.Count == 0 && _enemiesRow2.Count == 0 && _enemiesRow3.Count == 0)
+                //fin si tous les ennemis ont été tués
+                if(_enemiesRow1.Count == 0 && _enemiesRow2.Count == 0 && _enemiesRow3.Count == 0 || _ship.Life == 0 || (_enemiesRow1 != null && _enemiesRow1.Any() && _enemiesRow1.First().PositionY == _ship.PositionY - 1) || (_enemiesRow2 != null && _enemiesRow2.Any() && _enemiesRow2.First().PositionY == _ship.PositionY - 1) || (_enemiesRow3 != null && _enemiesRow3.Any() && _enemiesRow3.First().PositionY == _ship.PositionY - 1))
                 {
                     _endGame = true;
                 }
 
-                else if((_enemiesRow1 != null && _enemiesRow1.Any() && _enemiesRow1.First().EnemyY == _ship.PositionY - 1) || (_enemiesRow2 != null && _enemiesRow2.Any() && _enemiesRow2.First().EnemyY == _ship.PositionY - 1) || (_enemiesRow3 != null && _enemiesRow3.Any() && _enemiesRow3.First().EnemyY == _ship.PositionY - 1))
-                {
-                    _endGame = true;
-                }
 
                 if (!_endGame)
                 {
                     UpdateAllEnemies();
 
                     DrawAll();
+
+                    _ship.DrawLife();
                 }
                 else
                 {
@@ -237,7 +245,6 @@ namespace spicy_invaders
         private void ClearAll()
         {
             _ship.ClearShip();
-            _missile.ClearMissile();
             foreach (Missile missile in _missiles)
             {
                 missile.ClearMissile();
@@ -257,7 +264,6 @@ namespace spicy_invaders
         private void DrawAll()
         {
             _ship.DrawShip();
-            _missile.DrawMissile();
             foreach(Missile missile in _missiles)
             {
                 missile.DrawMissile();
@@ -275,13 +281,13 @@ namespace spicy_invaders
         /// <summary>
         /// vérifie si un ennemi a été touché
         /// </summary>
-        private void CheckEnemyHit()
+        /*private void CheckEnemyHit()
         {
             foreach(List<Enemy> enemyList in _allEnemies)
             {
                 foreach (Enemy enemy in enemyList)
                 {
-                    if (enemy.EnemyY == _missile.MissileY && enemy.EnemyX == _missile.MissileX || enemy.EnemyY == _missile.MissileY && enemy.EnemyX + 1 == _missile.MissileX || enemy.EnemyY == _missile.MissileY && enemy.EnemyX + 2 == _missile.MissileX || enemy.EnemyY == _missile.MissileY && enemy.EnemyX + 3 == _missile.MissileX)
+                    if (enemy.PositionY == _missile.MissileY && enemy.PositionX == _missile.MissileX || enemy.PositionY == _missile.MissileY && enemy.PositionX + 1 == _missile.MissileX || enemy.PositionY == _missile.MissileY && enemy.PositionX + 2 == _missile.MissileX || enemy.PositionY == _missile.MissileY && enemy.PositionX + 3 == _missile.MissileX)
                     {
                         //enlève le missile
                         _missile.ClearMissile();
@@ -302,7 +308,7 @@ namespace spicy_invaders
                 }
 
             }
-        }
+        }*/
 
         /// <summary>
         /// change la direction des ennemis lorsqu'ils arrivent au bord de l'écran
@@ -310,7 +316,7 @@ namespace spicy_invaders
         private void EnemiesChangeDirection()
         {
 
-            if ((_enemiesRow1 != null && _enemiesRow1.Any() && _enemiesRow1.Last().EnemyX == Console.WindowWidth - 3) || (_enemiesRow2 != null && _enemiesRow2.Any() && _enemiesRow2.Last().EnemyX == Console.WindowWidth - 3) || (_enemiesRow3 != null && _enemiesRow3.Any() && _enemiesRow3.Last().EnemyX == Console.WindowWidth - 3))
+            if ((_enemiesRow1 != null && _enemiesRow1.Any() && _enemiesRow1.Last().PositionX == Console.WindowWidth - 3) || (_enemiesRow2 != null && _enemiesRow2.Any() && _enemiesRow2.Last().PositionX == Console.WindowWidth - 3) || (_enemiesRow3 != null && _enemiesRow3.Any() && _enemiesRow3.Last().PositionX == Console.WindowWidth - 3))
             {
                 foreach (List<Enemy> enemyList in _allEnemies)
                 {
@@ -322,13 +328,13 @@ namespace spicy_invaders
                             enemy.GoingLeft = true;
 
                             enemy.ClearEnemy();
-                            enemy.EnemyY++;
+                            enemy.PositionY++;
                         }
                     }
                 }
             }
 
-            else if ((_enemiesRow1 != null && _enemiesRow1.Any() && _enemiesRow1.First().EnemyX == 1) || (_enemiesRow2 != null && _enemiesRow2.Any() && _enemiesRow2.First().EnemyX == 1) || (_enemiesRow3 != null && _enemiesRow3.Any() && _enemiesRow3.First().EnemyX == 1))
+            else if ((_enemiesRow1 != null && _enemiesRow1.Any() && _enemiesRow1.First().PositionX == 1) || (_enemiesRow2 != null && _enemiesRow2.Any() && _enemiesRow2.First().PositionX == 1) || (_enemiesRow3 != null && _enemiesRow3.Any() && _enemiesRow3.First().PositionX == 1))
             {
                 foreach(List<Enemy> enemyList in _allEnemies)
                 {
@@ -340,7 +346,7 @@ namespace spicy_invaders
                             enemy.GoingLeft = false;
 
                             enemy.ClearEnemy();
-                            enemy.EnemyY++;
+                            enemy.PositionY++;
                         }
                     }
                 }
@@ -357,7 +363,29 @@ namespace spicy_invaders
             {
                 foreach (Enemy enemy in enemyList)
                 {
-                    enemy.UpdateEnemy();
+                    _enemyToShoot = _random.Next(_shootRate);
+
+                    if(_enemyToShoot < enemyList.Count && enemy == enemyList[_enemyToShoot])
+                    {
+                        enemy.UpdateEnemy(true);
+                    }
+                    else
+                    {
+                        enemy.UpdateEnemy(false);
+                    }
+
+                    //vérifie si l'ennemi s'est fait touché
+                    if (_missile.CheckPlayerHit(enemy))
+                    {
+                        //enlève l'ennemi touché
+                        enemyList.Remove(enemy);
+                        enemy.Life = 0;
+                        enemy.ClearEnemy();
+
+                        //ajoute des points au score
+                        _score += 20;
+                        break;
+                    }
                 }
             }
         }
@@ -370,50 +398,53 @@ namespace spicy_invaders
         private void ShowScore(int posX, int posY)
         {
             Console.SetCursorPosition(posX, posY);
-            Console.WriteLine("SCORE : " + _score);
+            Console.WriteLine($"SCORE : {_score}");
         }
 
         /// <summary>
         /// dessine tous les bunkers créés
         /// </summary>
-        /// <param name="allBunkers">liste de liste contenant toutes les barricades</param>
         private void DrawAllBunkers()
         {
-            foreach (List<Barricade> barricadeList in _allBunkers)
+            foreach (Bunker barricade in _allBunkers)
             {
-                foreach (Barricade barricade in barricadeList)
-                {
-                    barricade.Draw();
-                }
+                barricade.Draw();
             }
         }
 
         /// <summary>
         /// vérifie si le missile allié a touché un bunker
         /// </summary>
-        private void CheckBunkerHit()
+        private bool CheckBunkerHit()
         {
-            foreach (List<Barricade> barricadeList in _allBunkers)
+            foreach (Bunker barricade in _allBunkers)
             {
-                foreach (Barricade barricade in barricadeList)
+                foreach(Missile missile in _missiles)
                 {
-                    if (barricade.X == _missile.MissileX && barricade.Y == _missile.MissileY)
+                    if (barricade.X == missile.MissileX && barricade.Y == missile.MissileY)
                     {
                         //enlève le missile
-                        _missile.ClearMissile();
-                        _missile.MissileX = _ship.PositionX;
-                        _missile.MissileY = _ship.PositionY;
-                        _missile.IsMissile = false;
+                        missile.ClearMissile();
+
+                        //déplace le missile si c'est celui du joueur
+                        if(missile == _missiles[0])
+                        {
+                            missile.MissileX = _ship.PositionX;
+                            missile.MissileY = _ship.PositionY;
+                        }
+
+                        missile.IsMissile = false;
 
                         //enlève la barricade touchée
-                        barricadeList.Remove(barricade);
+                        _allBunkers.Remove(barricade);
                         barricade.Clear();
 
-                        break;
+                        return true;
                     }
                 }
-
             }
+            return true;
+            
         }
 
         private void UpdateMissiles()
@@ -421,6 +452,13 @@ namespace spicy_invaders
             foreach(Missile missile in _missiles)
             {
                 missile.UpdateMissile();
+
+                //si un missile touche le joueur l'enlève de la liste et met a jour l'affichage des vies
+                if (missile.CheckPlayerHit(_ship))
+                {
+                    _missiles.Remove(missile);
+                    break;
+                }
             }
         }
     }

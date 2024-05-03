@@ -7,20 +7,28 @@
       "RelativeMoniker": "D:0:0:{41545A03-15D6-4314-82BE-F0D48EC1DB57}|spicy invaders\\spicy invaders.csproj|solutionrelative:spicy invaders\\missile.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{41545A03-15D6-4314-82BE-F0D48EC1DB57}|spicy invaders\\spicy invaders.csproj|d:\\semestre 3\\p_spicyinvaders\\spicy invaders\\spicy invaders\\main.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{41545A03-15D6-4314-82BE-F0D48EC1DB57}|spicy invaders\\spicy invaders.csproj|solutionrelative:spicy invaders\\main.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{41545A03-15D6-4314-82BE-F0D48EC1DB57}|spicy invaders\\spicy invaders.csproj|D:\\Semestre 3\\P_SpicyInvaders\\spicy invaders\\spicy invaders\\game.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{41545A03-15D6-4314-82BE-F0D48EC1DB57}|spicy invaders\\spicy invaders.csproj|solutionrelative:spicy invaders\\game.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{41545A03-15D6-4314-82BE-F0D48EC1DB57}|spicy invaders\\spicy invaders.csproj|d:\\semestre 3\\p_spicyinvaders\\spicy invaders\\spicy invaders\\enemy.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{41545A03-15D6-4314-82BE-F0D48EC1DB57}|spicy invaders\\spicy invaders.csproj|D:\\Semestre 3\\P_SpicyInvaders\\spicy invaders\\spicy invaders\\spaceship.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{41545A03-15D6-4314-82BE-F0D48EC1DB57}|spicy invaders\\spicy invaders.csproj|solutionrelative:spicy invaders\\spaceship.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{41545A03-15D6-4314-82BE-F0D48EC1DB57}|spicy invaders\\spicy invaders.csproj|d:\\semestre 3\\p_spicyinvaders\\spicy invaders\\spicy invaders\\shootingobject.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{41545A03-15D6-4314-82BE-F0D48EC1DB57}|spicy invaders\\spicy invaders.csproj|solutionrelative:spicy invaders\\shootingobject.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{41545A03-15D6-4314-82BE-F0D48EC1DB57}|spicy invaders\\spicy invaders.csproj|D:\\Semestre 3\\P_SpicyInvaders\\spicy invaders\\spicy invaders\\enemy.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{41545A03-15D6-4314-82BE-F0D48EC1DB57}|spicy invaders\\spicy invaders.csproj|solutionrelative:spicy invaders\\enemy.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{41545A03-15D6-4314-82BE-F0D48EC1DB57}|spicy invaders\\spicy invaders.csproj|D:\\Semestre 3\\P_SpicyInvaders\\spicy invaders\\spicy invaders\\spaceship.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{41545A03-15D6-4314-82BE-F0D48EC1DB57}|spicy invaders\\spicy invaders.csproj|solutionrelative:spicy invaders\\spaceship.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{41545A03-15D6-4314-82BE-F0D48EC1DB57}|spicy invaders\\spicy invaders.csproj|d:\\semestre 3\\p_spicyinvaders\\spicy invaders\\spicy invaders\\bunker.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{41545A03-15D6-4314-82BE-F0D48EC1DB57}|spicy invaders\\spicy invaders.csproj|solutionrelative:spicy invaders\\bunker.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{41545A03-15D6-4314-82BE-F0D48EC1DB57}|spicy invaders\\spicy invaders.csproj|d:\\semestre 3\\p_spicyinvaders\\spicy invaders\\spicy invaders\\main.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{41545A03-15D6-4314-82BE-F0D48EC1DB57}|spicy invaders\\spicy invaders.csproj|solutionrelative:spicy invaders\\main.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -30,43 +38,69 @@
       "DocumentGroups": [
         {
           "DockedWidth": 206,
-          "SelectedChildIndex": 3,
+          "SelectedChildIndex": 5,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 3,
+              "Title": "ShootingObject.cs",
+              "DocumentMoniker": "D:\\Semestre 3\\P_SpicyInvaders\\spicy invaders\\spicy invaders\\ShootingObject.cs",
+              "RelativeDocumentMoniker": "spicy invaders\\ShootingObject.cs",
+              "ToolTip": "D:\\Semestre 3\\P_SpicyInvaders\\spicy invaders\\spicy invaders\\ShootingObject.cs",
+              "RelativeToolTip": "spicy invaders\\ShootingObject.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAkAAAAFAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-05-03T13:25:11.771Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
               "Title": "Main.cs",
               "DocumentMoniker": "D:\\Semestre 3\\P_SpicyInvaders\\spicy invaders\\spicy invaders\\Main.cs",
               "RelativeDocumentMoniker": "spicy invaders\\Main.cs",
               "ToolTip": "D:\\Semestre 3\\P_SpicyInvaders\\spicy invaders\\spicy invaders\\Main.cs",
               "RelativeToolTip": "spicy invaders\\Main.cs",
-              "ViewState": "AQIAABEAAAAAAAAAAAAQwAAAAAAAAAAA",
+              "ViewState": "AQIAAAkAAAAAAAAAAAAAAAAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-04-26T14:23:59.227Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 5,
+              "Title": "Bunker.cs",
+              "DocumentMoniker": "D:\\Semestre 3\\P_SpicyInvaders\\spicy invaders\\spicy invaders\\Bunker.cs",
+              "RelativeDocumentMoniker": "spicy invaders\\Bunker.cs",
+              "ToolTip": "D:\\Semestre 3\\P_SpicyInvaders\\spicy invaders\\spicy invaders\\Bunker.cs",
+              "RelativeToolTip": "spicy invaders\\Bunker.cs",
+              "ViewState": "AQIAABcAAAAAAAAAAAAhwCYAAAAYAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-05-03T11:11:53.534Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
               "Title": "Enemy.cs",
               "DocumentMoniker": "D:\\Semestre 3\\P_SpicyInvaders\\spicy invaders\\spicy invaders\\Enemy.cs",
               "RelativeDocumentMoniker": "spicy invaders\\Enemy.cs",
               "ToolTip": "D:\\Semestre 3\\P_SpicyInvaders\\spicy invaders\\spicy invaders\\Enemy.cs",
               "RelativeToolTip": "spicy invaders\\Enemy.cs",
-              "ViewState": "AQIAAHcAAAAAAAAAAAAYwJkAAAAeAAAA",
+              "ViewState": "AQIAAAkAAAAAAAAAAAAAAEEAAAAVAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-03-07T12:18:34.731Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 2,
               "Title": "SpaceShip.cs",
               "DocumentMoniker": "D:\\Semestre 3\\P_SpicyInvaders\\spicy invaders\\spicy invaders\\SpaceShip.cs",
               "RelativeDocumentMoniker": "spicy invaders\\SpaceShip.cs",
               "ToolTip": "D:\\Semestre 3\\P_SpicyInvaders\\spicy invaders\\spicy invaders\\SpaceShip.cs",
               "RelativeToolTip": "spicy invaders\\SpaceShip.cs",
-              "ViewState": "AQIAAEoAAAAAAAAAAAAuwEYAAAAwAAAA",
+              "ViewState": "AQIAADUAAAAAAAAAAAAIwA4AAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-03-07T12:18:34.747Z",
               "EditorCaption": ""
@@ -79,20 +113,20 @@
               "RelativeDocumentMoniker": "spicy invaders\\Missile.cs",
               "ToolTip": "D:\\Semestre 3\\P_SpicyInvaders\\spicy invaders\\spicy invaders\\Missile.cs",
               "RelativeToolTip": "spicy invaders\\Missile.cs",
-              "ViewState": "AQIAAFwAAAAAAAAAAAAmwHQAAAAjAAAA",
+              "ViewState": "AQIAAK0AAAAAAAAAAAAuwMQAAAAdAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-03-07T12:18:34.747Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 1,
               "Title": "Game.cs",
               "DocumentMoniker": "D:\\Semestre 3\\P_SpicyInvaders\\spicy invaders\\spicy invaders\\Game.cs",
               "RelativeDocumentMoniker": "spicy invaders\\Game.cs",
               "ToolTip": "D:\\Semestre 3\\P_SpicyInvaders\\spicy invaders\\spicy invaders\\Game.cs",
               "RelativeToolTip": "spicy invaders\\Game.cs",
-              "ViewState": "AQIAAAsAAAAAAAAAAAAQwJwAAAAhAAAA",
+              "ViewState": "AQIAAGUBAAAAAAAAAAArwH8BAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-03-07T12:18:34.7Z",
               "EditorCaption": ""

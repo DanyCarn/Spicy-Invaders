@@ -45,10 +45,11 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Barricade.cs" />
+    <Compile Include="Bunker.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="Enemy.cs" />
     <Compile Include="Missile.cs" />
+    <Compile Include="ShootingObject.cs" />
     <Compile Include="SpaceShip.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

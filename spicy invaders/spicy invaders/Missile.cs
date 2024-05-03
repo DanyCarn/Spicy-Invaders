@@ -43,7 +43,7 @@ namespace spicy_invaders
         /// <summary>
         /// indique si le missile tiré a été tiré par un ennemi ou un allié
         /// </summary>
-        private bool _isAlly;
+        public bool _isAlly;
 
         /// <summary>
         /// le vaisseau du joueur
@@ -135,7 +135,7 @@ namespace spicy_invaders
                 }
                 else
                 {
-                    Console.SetCursorPosition(_missileX, _enemy.EnemyY + 1);
+                    Console.SetCursorPosition(_missileX, _enemy.PositionY + 1);
                 }
                 Console.WriteLine(" ");
             }
@@ -168,5 +168,38 @@ namespace spicy_invaders
             //indique qu'il y a un missile
             _isMissile = true;
         }
+
+
+        /// <summary>
+        /// contrôle si le missile a touché le joueur
+        /// </summary>
+        /// <param name="target">la cible du missile</param>
+        public bool CheckPlayerHit(ShootingObject target)
+        {
+
+            //si le missile touche le vaisseau, le vaisseau perd une vie et le missile se désactive
+            if (target.PositionY == MissileY && target.PositionX == MissileX || target.PositionY == MissileY && target.PositionX + 1 == MissileX || target.PositionY == MissileY && target.PositionX + 2 == MissileX || target.PositionY == MissileY && target.PositionX + 3 == MissileX)
+            {
+
+                target.Life--;
+                ClearMissile();
+                if (_isAlly)
+                {
+                    MissileX = _ship.PositionX;
+                    MissileY = _ship.PositionY-1;
+                }
+
+                _isMissile = false;
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+            
+
+           
+        }
     }
+
 }

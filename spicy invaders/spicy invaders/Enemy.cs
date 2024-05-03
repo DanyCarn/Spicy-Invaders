@@ -11,39 +11,18 @@ using System.Threading;
 
 namespace spicy_invaders
 {
-    internal class Enemy
+    internal class Enemy : ShootingObject
     {
         /// <summary>
         /// sprite de l'ennemi
         /// </summary>
-        private const string ENEMY = "+-+";
+        private const string SPRITE = "+-+";
 
         /// <summary>
         /// taille de l'ennemi
         /// </summary>
         private const int ENEMY_SIZE = 3;
 
-
-        /// <summary>
-        /// position de l'ennemi dans l'axe x
-        /// </summary>
-        private int _positionX = 0;
-        public int EnemyX { get { return _positionX; } set { _positionX = value; } }
-
-        /// <summary>
-        /// position dans l'axe y de l'ennemi
-        /// </summary>
-        private int _positionY = 0;
-        public int EnemyY{ get { return _positionY; } set { _positionY = value; } }
-
-
-        /// <summary>
-        /// Vie de l'ennemi
-        /// </summary>
-        private int _enemyLife = 1;
-        public int Life { get { return _enemyLife; } set { _enemyLife = value; } }        
-            
-    
         /// <summary>
         /// l'ennemi va à gauche
         /// </summary>
@@ -63,11 +42,6 @@ namespace spicy_invaders
         public int EnemySpeed { get { return _enemySpeed; } }
 
         /// <summary>
-        /// générateur d'aléatoire qui détermine si l'ennemi tire ou pas
-        /// </summary>
-        private Random _random;
-
-        /// <summary>
         /// le jeu en cours
         /// </summary>
         private Game _game;
@@ -85,10 +59,11 @@ namespace spicy_invaders
         /// <param name="positionY">position de l'ennemi sur l'axe y</param>
         public Enemy(int positionX, int positionY, Game game)
         {
-            _positionX = positionX;
-            _positionY = positionY;
+            PositionX = positionX;
+            PositionY = positionY;
             _enemySpeed = 0;
             _game = game;
+            Life = 1;
         }
 
         /// <summary>
@@ -96,10 +71,10 @@ namespace spicy_invaders
         /// </summary>
         public void DrawEnemy()
         {
-            if(_enemyLife > 0)
+            if(Life > 0)
             {
-                Console.SetCursorPosition(_positionX, _positionY);
-                Console.WriteLine(ENEMY);
+                Console.SetCursorPosition(PositionX, PositionY);
+                Console.WriteLine(SPRITE);
             }
         }
 
@@ -108,11 +83,11 @@ namespace spicy_invaders
         /// </summary>
         public void ClearEnemy()
         {
-            if(_positionX >= 0 && _positionX <= Console.WindowWidth - 3)
+            if(PositionX >= 0 && PositionX <= Console.WindowWidth - 3)
             {
                 for(int i = 0; i < ENEMY_SIZE; i++)
                 {
-                    Console.SetCursorPosition(_positionX + i, _positionY);
+                    Console.SetCursorPosition(PositionX + i, PositionY);
                     Console.WriteLine(' ');
                 }
             }
@@ -121,20 +96,20 @@ namespace spicy_invaders
         /// <summary>
         /// met à jour la position de l'ennemi
         /// </summary>
-        public void UpdateEnemy()
+        public void UpdateEnemy(bool isShooting)
         {
             if(_enemySpeed == 1)
             {
                 //déplacement de l'ennemi si il se dirige à droite
                 if (_goingRight)
                 {
-                    _positionX += 1;
+                    PositionX += 1;
                 }
 
                 //déplacement de l'ennemi si il se dirige à gauche
                 else if (_goingLeft)
                 {
-                    _positionX -= 1;
+                    PositionX -= 1;
                 }
 
                 _enemySpeed = 0;
@@ -144,21 +119,22 @@ namespace spicy_invaders
                 _enemySpeed++;
             }
 
-            Shoot();
+            if(isShooting)
+            {
+                Shoot();
+            }
         }
 
+        /// <summary>
+        /// méthode permettant à l'ennemi de tirer
+        /// </summary>
         public void Shoot()
         {
-            _random = new Random();
-
-            if(_random.Next(70) == 1)
-            {
                 _missile = new Missile(this);
 
                 _game.Missiles.Add(_missile);
 
-                _missile.FireMissile(_positionX, _positionY);
-            }
+                _missile.FireMissile(PositionX, PositionY);
         }
 
     }

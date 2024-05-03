@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace spicy_invaders
 {
-    internal class Barricade
+    internal class Bunker
     {
         /// <summary>
         /// sprite de la barricade
@@ -27,7 +27,7 @@ namespace spicy_invaders
         /// </summary>
         /// <param name="x">position x de la barricade</param>
         /// <param name="y">position y de la barricade</param>
-        public Barricade(int x, int y)
+        public Bunker(int x, int y)
         {
             _x = x;
             _y = y;

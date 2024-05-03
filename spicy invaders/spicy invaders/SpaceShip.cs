@@ -3,38 +3,39 @@
 ///Date : 25.01.2024
 ///Description : Classe concernant le vaisseau jouable par le joueur
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
 
 namespace spicy_invaders
 {
-    internal class SpaceShip
+    internal class SpaceShip : ShootingObject
     {
-        //sprite du vaisseau controlé par le joueur
-        private const string SPACESHIP = "<^>";
+        /// <summary>
+        /// sprite du vaisseau controlé par le joueur
+        /// </summary>
+        private const string SPRITE = "<^>";
 
-        //la taille du vaisseau
+        /// <summary>
+        /// la taille du vaisseau
+        /// </summary>
         private const int SHIPSIZE = 3;
 
-        //position de départ dans l'axe X pour le vaisseau
-        private int _shipX = Console.WindowWidth / 2;
-        public int PositionX { get { return _oldXPosition; } set { _oldXPosition = value; } }
+        /// <summary>
+        /// La position du vaisseau avant le déplacement
+        /// </summary>
+        public int OldPosition { get; set; } = 0;
 
 
-        //position de départ dans l'axe Y pour le vaisseau
-        private int _shipY = Console.WindowHeight - 2 ;
-        public int PositionY { get { return _shipY; } set { _shipY = value; } }
-
-        //La position du vaisseau avant le déplacement
-        private int _oldXPosition = 0;
-        public int OldPosition { get { return _oldXPosition; } set {_oldXPosition = value; } }
+        /// <summary>
+        /// indique si le joueur est en vie
+        /// </summary>
+        public bool ShipAlive { get; set; } = true;
 
 
-        //indique si le joueur est en vie
-        private bool _shipAlive = true;
-        public bool ShipAlive { get { return _shipAlive; } set { _shipAlive = value; } }
+        public SpaceShip()
+        {
+            Life = 3;
+            PositionX = Console.WindowWidth / 2;
+            PositionY = Console.WindowHeight - 3;
+        }
 
 
         /// <summary>
@@ -42,8 +43,8 @@ namespace spicy_invaders
         /// </summary>
         public void DrawShip()
         {
-            Console.SetCursorPosition(_shipX, _shipY);
-            Console.WriteLine(SPACESHIP);
+            Console.SetCursorPosition(PositionX, PositionY);
+            Console.WriteLine(SPRITE);
         }
 
         /// <summary>
@@ -54,7 +55,7 @@ namespace spicy_invaders
             //remplace les symboles du vaisseau pour les remplacer par du vide afin d'effacer uniquement le vaisseau et laisser le reste de la console
             for(int i = 0; i < SHIPSIZE; i++)
             {
-                Console.SetCursorPosition(_oldXPosition + i, _shipY);
+                Console.SetCursorPosition(OldPosition + i, PositionY);
                 Console.WriteLine(" ");
             }
         }
@@ -65,12 +66,12 @@ namespace spicy_invaders
         public void MoveRight()
         {
             //stocke la position du vaisseau avant le déplacement
-            _oldXPosition = _shipX;
+            OldPosition = PositionX;
 
             //empêche le joueur d'aller plus loin que la taille de la page
-            if (_shipX < Console.WindowWidth - 4)
+            if (PositionX < Console.WindowWidth - 4)
             {
-                _shipX++;
+                PositionX++;
             }
         }
 
@@ -80,13 +81,22 @@ namespace spicy_invaders
         public void MoveLeft() 
         {
             //stocke la position du vaisseau avant le déplacement
-            _oldXPosition = _shipX;
+            OldPosition = PositionX;
 
             //empêche le joueur d'aller plus loin que la taille de la page
-            if (_shipX > 0)
+            if (PositionX > 0)
             {
-                _shipX--;
+                PositionX--;
             }
+        }
+
+        /// <summary>
+        /// dessine les vies du joueur sur la console
+        /// </summary>
+        public void DrawLife()
+        {
+            Console.SetCursorPosition(3, Console.WindowHeight - 2);
+            Console.WriteLine($"Vies : {Life}");
         }
     }
 }
