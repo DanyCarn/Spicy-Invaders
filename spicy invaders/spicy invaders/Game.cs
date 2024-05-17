@@ -1,5 +1,11 @@
-﻿using System;
+﻿///ETML
+///Auteur : Dany Carneiro
+///Date : 22.02.24
+///Description : Classe où le jeu se déroule
+
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
@@ -12,7 +18,12 @@ namespace spicy_invaders
         /// <summary>
         /// nombre d'ennemis
         /// </summary>
-        const int MAX_ENEMIES = 24;
+        private const int MAX_ENEMIES = 24;
+
+        /// <summary>
+        /// chemin d'accès au fichier contenant les scores
+        /// </summary>
+        private const string PATH = @".\highscores.txt";
 
         /// <summary>
         /// score de l'utilisateur
@@ -55,6 +66,11 @@ namespace spicy_invaders
         private Missile _missile;
 
         /// <summary>
+        /// classe permet d'écrire dans le fichier des scores le score final
+        /// </summary>
+        private FileManager _fileManager;
+
+        /// <summary>
         /// fin de partie
         /// </summary>
         private bool _endGame = false;
@@ -74,7 +90,16 @@ namespace spicy_invaders
         /// </summary>
         private int _shootRate = 350;
 
-        public Game()
+        /// <summary>
+        /// nom que l'utilisateur choisi à la fin de la partie
+        /// </summary>
+        private string _username;
+
+        /// <summary>
+        /// constructeur
+        /// </summary>
+        /// <param name="fileManager">le manager de fichiers qui permetra d'écrire le score dans le fichier</param>
+        public Game(FileManager fileManager)
         {
             _ship = new SpaceShip();
 
@@ -93,6 +118,8 @@ namespace spicy_invaders
             {
                 _missile
             };
+
+            _fileManager = fileManager;
         }
 
         /// <summary>
@@ -108,25 +135,7 @@ namespace spicy_invaders
             _allEnemies.Add(_enemiesRow3);
 
 
-            //intsancie les ennemis
-            for (int i = 0; i < 24; i++)
-            {
-                if (i < 8)
-                {
-                    Enemy enemy = new Enemy(1 + (i * 4), 1, this);
-                    _enemiesRow1.Add(enemy);
-                }
-                else if (i < 16)
-                {
-                    Enemy enemy = new Enemy(1 + ((i - 8) * 4), 2, this);
-                    _enemiesRow2.Add(enemy);
-                }
-                else if (i < MAX_ENEMIES)
-                {
-                    Enemy enemy = new Enemy(1 + ((i - 16) * 4), 3, this);
-                    _enemiesRow3.Add(enemy);
-                }
-            }
+            DrawAllEnemies();
 
             //instancie les bunker
             for (int i = 0; i < 2; i++)
@@ -203,20 +212,31 @@ namespace spicy_invaders
                     }
                 }
 
+                //vérifie les collisions avec les bunkers
+                foreach(Bunker b in _allBunkers)
+                {
+                    if(b.CheckBunkerHit(_allBunkers, _missiles, _ship))
+                    {
+                        break;
+                    }
+                }
 
-                CheckBunkerHit();
-                //CheckEnemyHit();
                 EnemiesChangeDirection();
 
                 ClearAll();
 
                 //conditions de fin de jeu
-                //fin si tous les ennemis ont été tués
-                if(_enemiesRow1.Count == 0 && _enemiesRow2.Count == 0 && _enemiesRow3.Count == 0 || _ship.Life == 0 || (_enemiesRow1 != null && _enemiesRow1.Any() && _enemiesRow1.First().PositionY == _ship.PositionY - 1) || (_enemiesRow2 != null && _enemiesRow2.Any() && _enemiesRow2.First().PositionY == _ship.PositionY - 1) || (_enemiesRow3 != null && _enemiesRow3.Any() && _enemiesRow3.First().PositionY == _ship.PositionY - 1))
+                //fin si le joueur n'a plus de vie ou que les ennemis sont arrivés à la hauteur du joueur
+                if(_ship.Life == 0 || (_enemiesRow1 != null && _enemiesRow1.Any() && _enemiesRow1.First().PositionY == _ship.PositionY - 1) || (_enemiesRow2 != null && _enemiesRow2.Any() && _enemiesRow2.First().PositionY == _ship.PositionY - 1) || (_enemiesRow3 != null && _enemiesRow3.Any() && _enemiesRow3.First().PositionY == _ship.PositionY - 1))
                 {
                     _endGame = true;
                 }
 
+                //Si tous les ennemis ont été tués en crée d'autres
+                if(!_endGame && _enemiesRow1.Count == 0 && _enemiesRow2.Count == 0 && _enemiesRow3.Count == 0)
+                {
+                    DrawAllEnemies();
+                }
 
                 if (!_endGame)
                 {
@@ -233,6 +253,14 @@ namespace spicy_invaders
                     Console.WriteLine("Game Over !");
                     ShowScore(Console.WindowWidth/2 - 5, Console.WindowHeight/2 + 1);
                     Console.ReadLine();
+                    Console.Clear();
+
+                    //enregistrement du score dans le fichier texte
+                    Console.SetCursorPosition(Console.WindowWidth / 2 - 10, Console.WindowHeight / 2);
+                    Console.Write("Enter your name : ");
+                    _username = Console.ReadLine();
+                    
+
                 }
 
             } while (!_endGame);
@@ -279,43 +307,11 @@ namespace spicy_invaders
         }
 
         /// <summary>
-        /// vérifie si un ennemi a été touché
-        /// </summary>
-        /*private void CheckEnemyHit()
-        {
-            foreach(List<Enemy> enemyList in _allEnemies)
-            {
-                foreach (Enemy enemy in enemyList)
-                {
-                    if (enemy.PositionY == _missile.MissileY && enemy.PositionX == _missile.MissileX || enemy.PositionY == _missile.MissileY && enemy.PositionX + 1 == _missile.MissileX || enemy.PositionY == _missile.MissileY && enemy.PositionX + 2 == _missile.MissileX || enemy.PositionY == _missile.MissileY && enemy.PositionX + 3 == _missile.MissileX)
-                    {
-                        //enlève le missile
-                        _missile.ClearMissile();
-                        _missile.MissileX = _ship.PositionX;
-                        _missile.MissileY = _ship.PositionY;
-                        _missile.IsMissile = false;
-
-                        //enlève l'ennemi touché
-                        enemyList.Remove(enemy);
-                        enemy.Life = 0;
-                        enemy.ClearEnemy();
-
-                        //ajoute des points au score
-                        _score += 20;
-
-                        break;
-                    }
-                }
-
-            }
-        }*/
-
-        /// <summary>
         /// change la direction des ennemis lorsqu'ils arrivent au bord de l'écran
         /// </summary>
         private void EnemiesChangeDirection()
         {
-
+            //Si le premier ou le dernier de chaque rangée atteint le bord droit du jeu, change la direction de leur déplacement
             if ((_enemiesRow1 != null && _enemiesRow1.Any() && _enemiesRow1.Last().PositionX == Console.WindowWidth - 3) || (_enemiesRow2 != null && _enemiesRow2.Any() && _enemiesRow2.Last().PositionX == Console.WindowWidth - 3) || (_enemiesRow3 != null && _enemiesRow3.Any() && _enemiesRow3.Last().PositionX == Console.WindowWidth - 3))
             {
                 foreach (List<Enemy> enemyList in _allEnemies)
@@ -334,6 +330,7 @@ namespace spicy_invaders
                 }
             }
 
+            //Si le premier ou le dernier de chaque rangée atteint le bord gauche du jeu, change la direction de leur déplacement
             else if ((_enemiesRow1 != null && _enemiesRow1.Any() && _enemiesRow1.First().PositionX == 1) || (_enemiesRow2 != null && _enemiesRow2.Any() && _enemiesRow2.First().PositionX == 1) || (_enemiesRow3 != null && _enemiesRow3.Any() && _enemiesRow3.First().PositionX == 1))
             {
                 foreach(List<Enemy> enemyList in _allEnemies)
@@ -413,40 +410,8 @@ namespace spicy_invaders
         }
 
         /// <summary>
-        /// vérifie si le missile allié a touché un bunker
+        /// met a jour tous les missiles
         /// </summary>
-        private bool CheckBunkerHit()
-        {
-            foreach (Bunker barricade in _allBunkers)
-            {
-                foreach(Missile missile in _missiles)
-                {
-                    if (barricade.X == missile.MissileX && barricade.Y == missile.MissileY)
-                    {
-                        //enlève le missile
-                        missile.ClearMissile();
-
-                        //déplace le missile si c'est celui du joueur
-                        if(missile == _missiles[0])
-                        {
-                            missile.MissileX = _ship.PositionX;
-                            missile.MissileY = _ship.PositionY;
-                        }
-
-                        missile.IsMissile = false;
-
-                        //enlève la barricade touchée
-                        _allBunkers.Remove(barricade);
-                        barricade.Clear();
-
-                        return true;
-                    }
-                }
-            }
-            return true;
-            
-        }
-
         private void UpdateMissiles()
         {
             foreach(Missile missile in _missiles)
@@ -458,6 +423,32 @@ namespace spicy_invaders
                 {
                     _missiles.Remove(missile);
                     break;
+                }
+            }
+        }
+
+        /// <summary>
+        /// crée les trois rangées d'ennemis
+        /// </summary>
+        private void DrawAllEnemies()
+        {
+            //intsancie tous les ennemis et les place dans les listes
+            for (int i = 0; i < 24; i++)
+            {
+                if (i < 8)
+                {
+                    Enemy enemy = new Enemy(1 + (i * 4), 1, this);
+                    _enemiesRow1.Add(enemy);
+                }
+                else if (i < 16)
+                {
+                    Enemy enemy = new Enemy(1 + ((i - 8) * 4), 2, this);
+                    _enemiesRow2.Add(enemy);
+                }
+                else if (i < MAX_ENEMIES)
+                {
+                    Enemy enemy = new Enemy(1 + ((i - 16) * 4), 3, this);
+                    _enemiesRow3.Add(enemy);
                 }
             }
         }

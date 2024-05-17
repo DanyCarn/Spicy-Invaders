@@ -1,4 +1,9 @@
-﻿using System;
+﻿///ETML
+///Auteur : Dany Carneiro
+///Date : 14.03.24
+///Description : Classe des bunkers. Elle permet de déssiner les bunkers ainsi que de gérer leur collision
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -49,6 +54,39 @@ namespace spicy_invaders
         {
             Console.SetCursorPosition(_x, _y);
             Console.Write(' ');
+        }
+
+
+        /// <summary>
+        /// vérifie si un missile a touché un bunker
+        /// </summary>
+        /// <returns>retourne vrai pour indiquer que le bunker est détruit et pour empêcher le jeu de planter</returns>
+        public bool CheckBunkerHit(List<Bunker> bunkers, List<Missile> missiles, SpaceShip ship)
+        {
+            foreach (Missile missile in missiles)
+            {
+                if (X == missile.MissileX && Y == missile.MissileY)
+                {
+                    //enlève le missile
+                    missile.ClearMissile();
+
+                    //déplace le missile si c'est celui du joueur
+                    if (missile == missiles[0])
+                    {
+                        missile.MissileX = ship.PositionX;
+                        missile.MissileY = ship.PositionY-1;
+                    }
+
+                    missile.IsMissile = false;
+
+                    //enlève la barricade touchée
+                    bunkers.Remove(this);
+                    Clear();
+
+                    return true;
+                }
+            }
+            return false;
         }
     }
 }

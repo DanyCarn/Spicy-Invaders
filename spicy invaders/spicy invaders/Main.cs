@@ -5,7 +5,9 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading;
 using System.Windows.Input;
@@ -18,6 +20,9 @@ namespace spicy_invaders
         [STAThread]
         static void Main(string[] args)
         {
+            //chemin d'accès au fichier contenant les scores
+            const string PATH = @".\highscores.txt";
+
             //largeur de la fenêtre
             const int WINDOWWIDTH = 111;
 
@@ -29,6 +34,10 @@ namespace spicy_invaders
 
             //indique si le joueur veut quitter
             bool _quit = false;
+
+            //Classe permettant d'écrire dans le fichier de scores
+            FileManager _fileManager = new FileManager();
+
 
             //fixe la taille de la fenêtre
             Console.WindowWidth = WINDOWWIDTH;
@@ -44,6 +53,12 @@ namespace spicy_invaders
             //permet de faire son choix à l'ouverture du jeu
             do
             {
+                //si le fichier contenant les scores nexiste pas, en crée un
+                if (!File.Exists(PATH))
+                {
+                    File.Create(PATH);
+                }
+                
                 //affiche le menu
                 Menu();
 
@@ -112,7 +127,7 @@ namespace spicy_invaders
             ///méthode permettant de lancer le jeu
             void Game()
             {
-                Game game = new Game();
+                Game game = new Game(_fileManager);
                 game.GameMethod();
             }
 
@@ -147,9 +162,16 @@ namespace spicy_invaders
                 }
             }
 
+            ///page de record
             void Highscore()
             {
+                Console.Clear();
+                Console.SetCursorPosition(WINDOWWIDTH / 2 - 3, 3);
+                Console.WriteLine("Highscore");
 
+                _fileManager.WriteScores();
+
+                Console.ReadLine();
             }
 
             ///affiche les règles du jeu

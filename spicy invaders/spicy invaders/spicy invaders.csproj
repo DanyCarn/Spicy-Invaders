@@ -46,6 +46,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Bunker.cs" />
+    <Compile Include="FileManager.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="Enemy.cs" />
     <Compile Include="Missile.cs" />
