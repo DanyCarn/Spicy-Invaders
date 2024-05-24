@@ -259,6 +259,7 @@ namespace spicy_invaders
                     Console.SetCursorPosition(Console.WindowWidth / 2 - 10, Console.WindowHeight / 2);
                     Console.Write("Enter your name : ");
                     _username = Console.ReadLine();
+                    _fileManager.AddScore(_username, _score);
                     
 
                 }

@@ -29,6 +29,9 @@ namespace spicy_invaders
         /// </summary>
         private StreamWriter _writer;
 
+        private string[] _line = new string[2];
+
+        private List<string[]> _lines = new List<string[]>();
 
 
         /// <summary>
@@ -60,16 +63,33 @@ namespace spicy_invaders
         {
             _reader = new StreamReader(PATH);
 
+
             for(int i = 0; i < 5; i++)
             {
-                Console.SetCursorPosition(Console.WindowWidth / 2 - 8, 5 + i);
-                Console.WriteLine(_reader.ReadLine());
+                if (!_reader.EndOfStream)
+                {
+                    _line = _reader.ReadLine().Split(',');
+                    Console.SetCursorPosition(Console.WindowWidth / 2 - 8, 5 + i);
+                    Console.WriteLine($"{_line[0]}\t|\t{_line[1]}");
+                }
             }
+
+            _reader.Close();
         }
 
+        /// <summary>
+        /// trie les scores dans le fichier de scores
+        /// </summary>
         private void SortScore()
         {
+            _reader = new StreamReader(PATH);
 
+            while(!_reader.EndOfStream)
+            {
+                _lines.Add(_reader.ReadLine().Split(','));
+            }
+
+            _lines.OrderByDescending();
         }
     }
 }
